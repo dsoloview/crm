@@ -1,0 +1,23 @@
+@import "../../styles/variables.scss";
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .input {
+    border-radius: 10px;
+    border: 0.6px solid var(--black-l-6, #B1B2B2);
+    color: #B1B2B2;
+    padding: 15px 24px;
+  }
+
+  .label {
+    color: $textColor;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%;
+  }
+
+}

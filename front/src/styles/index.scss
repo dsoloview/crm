@@ -1,0 +1,20 @@
+@use 'scss-reset/reset';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import "variables.scss";
+
+*, html, body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: $textColor;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+}
+
+html, body, #root, #root>div {
+  height: 100%
+}
+
+a {
+  text-decoration: none;
+}

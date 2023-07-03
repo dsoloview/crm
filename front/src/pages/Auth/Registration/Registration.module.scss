@@ -1,0 +1,30 @@
+@import "../../../styles/variables.scss";
+
+.registration {
+  margin: 20px auto;
+  max-width: 544px;
+
+  .title {
+    text-align: center;
+    color: $blackTextColor;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 130%;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    gap: 20px;
+
+    .button {
+      padding: 10px;
+      font-size: 22px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 160%;
+    }
+  }
+}
