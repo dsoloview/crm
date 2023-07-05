@@ -1,0 +1,45 @@
+version: '3.3'
+services:
+  nginx:
+    container_name: app-nginx
+    image: nginx:1.17-alpine
+    restart: unless-stopped
+    ports:
+      - ${API_PORT}:80
+    volumes:
+      - ./back:/var/www:cached
+      - ./docker/nginx:/etc/nginx/conf.d
+
+  api:
+    container_name: app-api
+    build:
+      args:
+        user: user
+        uid: 1000
+      context: .
+      dockerfile: ./docker/api/Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./back:/var/www:cached
+    env_file:
+      - .env
+
+  db:
+    container_name: app-db
+    restart: unless-stopped
+    image: mysql:5.7.38
+    ports:
+      - ${DB_PORT}:3306
+    volumes:
+      - ./docker/db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+
+  redis:
+    container_name: app-redis
+    image: redis:7.0
+    volumes:
+      - ./docker/redis:/data
