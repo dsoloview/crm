@@ -8,8 +8,8 @@ type Props = {
 } & WithChildrenProps
 
 const PrivateRoute: FC<Props> = ({children, roles}) => {
-    const auth = useAuth(roles)
-    if (auth) {
+    const authRole = useAuth(roles)
+    if (authRole) {
         return (
             <>
                 {children}
