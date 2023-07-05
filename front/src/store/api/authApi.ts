@@ -1,8 +1,9 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {AuthResponse, LoginRequest, RegisterRequest} from "../../types/auth.ts";
+import {User} from "../../types/models.ts";
 
 const authApi = createApi({
-    reducerPath: 'auth',
+    reducerPath: 'authApi',
     baseQuery: fetchBaseQuery({
         baseUrl: 'http://localhost:3000/auth'
     }),
@@ -25,10 +26,18 @@ const authApi = createApi({
                         body: data
                     }
                 }
-            })
+            }),
+            getUser: builder.query<User, void>({
+                query() {
+                    return {
+                        url: '/user',
+                        method: 'GET'
+                    }
+                }
+            }),
         }
     }
 })
 
-export const { useLoginMutation, useRegisterMutation }  = authApi;
+export const { useLoginMutation, useRegisterMutation, useGetUserQuery }  = authApi;
 export {authApi};

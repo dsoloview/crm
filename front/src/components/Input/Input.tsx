@@ -1,46 +1,39 @@
-import React, {FC, HTMLInputTypeAttribute} from "react";
+import {FC, HTMLInputTypeAttribute} from "react";
 import styles from './Input.module.scss';
-import {UseFormRegister} from "react-hook-form";
+import {FieldError, UseFormRegisterReturn} from "react-hook-form";
+import classNames from 'classnames/bind';
+
+let cx = classNames.bind(styles);
 
 type Props = {
     label?: string
-    name: string
     type: HTMLInputTypeAttribute
     placeholder?: string
-    value?: string
-    required?: boolean
-    register?: UseFormRegister<any>
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-    [x:string]: any
+    error?: FieldError
+    register: UseFormRegisterReturn
 }
 const Input: FC<Props> = (
     {
-        name,
-        required,
         label,
         type,
         placeholder,
-        value,
         register,
-        onChange,
-        ...rest
+        error,
     }) => {
+    const inputStyles = cx('input', {
+        "input--error": error
+    })
     return (
         <div className={styles.inputContainer}>
             {label && <label className={styles.label}>{label}</label>}
         <input
-            required={required}
-            className={styles.input}
+            {...register}
+            className={inputStyles}
             type={type}
-            name={name}
             placeholder={placeholder}
-            value={value}
-            onChange={onChange}
-            {...register(name, {required})}
-            {...rest}
         />
+            {error && <p className={styles.errorMessage}>{error.message}</p>}
         </div>
     )
 }
-
 export default Input;
