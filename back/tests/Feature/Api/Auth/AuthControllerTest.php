@@ -3,11 +3,13 @@
 namespace Tests\Feature\Api\Auth;
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class AuthControllerTest extends TestCase
 {
+    use DatabaseMigrations;
     use RefreshDatabase;
     // Write tests for login here
     public function testLogin(): void
