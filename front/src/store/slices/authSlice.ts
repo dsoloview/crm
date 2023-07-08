@@ -31,7 +31,15 @@ const authSlice = createSlice({
         builder.addMatcher(
             authApi.endpoints?.getUser.matchFulfilled,
             (state, {payload}) => {
-                state.user = payload
+                state.user = payload.data
+            }
+        )
+        builder.addMatcher(
+            authApi.endpoints?.logout.matchFulfilled,
+            (state) => {
+                state.user = null;
+                state.token = null;
+                localStorage.removeItem('token')
             }
         )
 }

@@ -1,11 +1,21 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {AuthResponse, LoginRequest, RegisterRequest} from "../../types/auth.ts";
 import {User} from "../../types/models.ts";
+import {RootStore} from "../store.ts";
+import {ILogoutResponse, IServerResponse} from "../../types/types.ts";
 
 const authApi = createApi({
     reducerPath: 'authApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://localhost:3000/auth'
+        baseUrl: 'http://localhost:8000/api/auth',
+        prepareHeaders: async (headers, {getState}) => {
+            const token = (getState() as RootStore).auth.token;
+            if (token) {
+                headers.set('authorization', `Bearer ${token}`);
+            }
+
+            return headers;
+        }
     }),
     endpoints(builder) {
         return {
@@ -27,7 +37,15 @@ const authApi = createApi({
                     }
                 }
             }),
-            getUser: builder.query<User, void>({
+            logout: builder.mutation<ILogoutResponse ,void>({
+               query() {
+                   return {
+                       url: '/logout',
+                       method: 'POST'
+                   }
+               }
+            }),
+            getUser: builder.query<IServerResponse<User>, void>({
                 query() {
                     return {
                         url: '/user',
@@ -39,5 +57,5 @@ const authApi = createApi({
     }
 })
 
-export const { useLoginMutation, useRegisterMutation, useGetUserQuery }  = authApi;
+export const { useLoginMutation, useRegisterMutation, useGetUserQuery, useLogoutMutation }  = authApi;
 export {authApi};

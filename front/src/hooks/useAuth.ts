@@ -24,8 +24,7 @@ function useAuth(roles: ERole[]): boolean {
     const {data, isSuccess, isError} = useGetUserQuery()
 
     if (isSuccess) {
-        console.log(data.role, roles);
-        if (data && !(roles.includes(data.role))) {
+        if (data.data && !roles.some(role => data.data.roles.includes(role))) {
             return false;
         }
     }
