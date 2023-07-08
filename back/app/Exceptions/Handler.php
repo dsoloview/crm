@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -23,8 +24,29 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (Throwable $e) {
+                if (request()->is('api/*')) {
+                    if ($e instanceof AuthenticationException) {
+                        return response()->json([
+                            'message' => $e->getMessage(),
+                            'status' => 401
+                        ], 401);
+                    }
+
+                    if ($e instanceof \Illuminate\Validation\ValidationException) {
+                        return response()->json([
+                            'message' => $e->getMessage(),
+                            'errors' => $e->errors(),
+                            'status' => 422
+                        ], 422);
+                    }
+
+                    $code = $e->getCode() !== 0 ? $e->getCode() : 500;
+                    return response()->json([
+                        'message' => $e->getMessage(),
+                        'status' => $code
+                    ], $code);
+                }
         });
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+    Route::prefix('/auth')->group(function () {
+        Route::get('/user', [AuthController::class, 'user'])->name('user');
+        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    });
+
+    Route::apiResource('/users', UserController::class);
+});
+
+Route::prefix('/auth')->group(function () {
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/register', [AuthController::class, 'register'])->name('register');
 });
