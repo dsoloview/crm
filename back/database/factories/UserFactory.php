@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Database\Seeders\RoleSeeder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
@@ -18,8 +19,6 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $roles = Role::pluck('id');
-
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
@@ -43,8 +42,13 @@ class UserFactory extends Factory
     public function configure(): static
     {
         return $this->afterCreating(function (\App\Models\User $user) {
+            if (!Role::count() && app()->environment('testing')) {
+                $seeder = new RoleSeeder();
+                $seeder->run();
+            }
+
             $roles = Role::pluck('id');
-            $user->assignRole($roles->random(1));
+            $user->assignRole($roles->random());
         });
     }
 }
