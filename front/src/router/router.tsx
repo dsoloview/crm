@@ -12,7 +12,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/components",
-        element: <PrivateRoute roles={[ERole.Admin]}><ComponentsPage /></PrivateRoute>,
+        element: <PrivateRoute roles={[ERole.User]}><ComponentsPage /></PrivateRoute>,
     },
     ...authRoutes
 ])

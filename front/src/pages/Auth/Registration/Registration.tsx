@@ -3,10 +3,13 @@ import {FC} from "react";
 import AuthLayout from "../AuthLayout.tsx";
 import Input from "../../../components/Input/Input.tsx";
 import Button from "../../../components/Button/Button.tsx";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
+import {useRegisterMutation} from "../../../store/api/authApi.ts";
+import ServerError from "../../../components/ServerError/ServerError.tsx";
+import {getErrorMessage} from "../../../utils/errorHelpers.ts";
 
 interface IFormInput {
     email: string
@@ -37,13 +40,23 @@ const Registration: FC = () => {
         resolver: zodResolver(formValidationSchema)
     });
 
+    const navigate = useNavigate();
+    const [registerUser, {error}] = useRegisterMutation();
+
     const onSubmit: SubmitHandler<IFormInput> = async (FormData) => {
-        console.log(FormData)
+        registerUser(FormData)
+            .unwrap()
+            .then(() => {
+                navigate('/')
+            }).catch((error) => {
+                console.log(error)
+            });
     }
     return (
         <AuthLayout>
             <div className={styles.registration}>
                 <h2 className={styles.title}>Registration</h2>
+                <ServerError message={getErrorMessage(error)} />
                 <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
                     <Input
                         register={register('name')}

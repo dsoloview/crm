@@ -6,12 +6,16 @@ import dashboard from "../../assets/images/auth/dashboard.png";
 import logo from "../../assets/images/logo.svg";
 import settings from "../../assets/images/icons/settings.svg";
 import {Link} from "react-router-dom";
+import useAuthRedirect from "../../hooks/useAuthRedirect.ts";
 
 type Props = & WithChildrenProps;
 const AuthLayout: FC<Props> = (
     {
         children
     }) => {
+
+    useAuthRedirect();
+
     return (
         <div className={styles.authLayout}>
             <div className={styles.leftPart}>
