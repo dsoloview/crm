@@ -7,7 +7,7 @@ let cx = cnBind.bind(styles);
 type Props = {
     type: "submit" | "button" | "reset",
     transparent?: boolean
-    children?: string
+    children?: any
     onClick?: () => void
     disabled?: boolean
     className?: string

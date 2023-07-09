@@ -1,5 +1,14 @@
 .layout {
   display: grid;
   grid-template-columns: 160px auto;
-  grid-template-rows: 1fr;
+
+  .topbar {
+    align-self: center;
+  }
+
+  .container {
+    grid-column: 2 / 2;
+    grid-row: 1 / -1;
+    padding: 22px 70px;
+  }
 }

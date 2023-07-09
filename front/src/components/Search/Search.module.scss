@@ -1,0 +1,26 @@
+.search {
+  position: relative;
+  max-width: 400px;
+
+  .input {
+    padding: 8px 27px;
+    background: #F6F6F6;
+    border-radius: 25px;
+    border: none;
+
+    &::placeholder {
+      font-size: 14px;
+      color: #8E9090;
+      font-weight: 400;
+    }
+  }
+
+  .button {
+    position: absolute;
+    right: 27px;
+    top: 0;
+    bottom: 0;
+    padding: 0;
+    background: transparent;;
+  }
+}

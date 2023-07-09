@@ -11,6 +11,7 @@ type Props = {
     placeholder?: string
     error?: FieldError
     register: UseFormRegisterReturn
+    className?: string
 }
 const Input: FC<Props> = (
     {
@@ -19,8 +20,9 @@ const Input: FC<Props> = (
         placeholder,
         register,
         error,
+        className
     }) => {
-    const inputStyles = cx('input', {
+    const inputStyles = cx('input', className, {
         "input--error": error
     })
     return (
