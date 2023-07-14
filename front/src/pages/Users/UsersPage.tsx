@@ -1,49 +1,57 @@
 import MainLayout from "../../layouts/main/MainLayout.tsx";
 import {useGetUsersQuery} from "../../store/api/usersApi.ts";
 import Table from "../../components/Table/Table.tsx";
-import {TTableHeader, TTableConfig, TTableRecord, TTableSort} from "../../types/Table/table.types.ts";
+import {TTableHeader, TTableConfig} from "../../types/Table/table.types.ts";
 import {useNavigate} from "react-router-dom";
 import Button from "../../components/Button/Button.tsx";
 import {User} from "../../types/User/model.ts";
-import {useState} from "react";
+import {useTable} from "../../hooks/useTable.ts";
+import Pagination from "../../components/Pagination/Pagination.tsx";
 
 const UsersPage = () => {
-    const [sort, setSort] = useState<TTableSort>({field: 'id', direction: 'asc'});
-    const {data, isSuccess} = useGetUsersQuery(sort);
+    const {
+        sort: {currentSort, defaultTableSort},
+        pagination: {currentPage, perPage, nextPage, prevPage, changePerPage}
+    } = useTable<User>({
+        sort: {
+            defaultSort: {
+                field: 'id',
+                direction: 'asc'
+            }
+        },
+        pagination: {
+            page: 1,
+            perPage: 10,
+        }
+    })
+    const {data, isSuccess} = useGetUsersQuery({
+        sort: currentSort,
+        page: currentPage,
+        perPage: perPage
+    });
     const navigate = useNavigate();
-    function defaultSetSort(field: string) {
-        setSort(prevState => {
-            if (prevState.field === field) {
-                return {
-                    field: field,
-                    direction: prevState.direction === 'asc' ? 'desc' : 'asc',
-                }
-            }
-            return {
-                field: field,
-                direction: 'asc',
-            }
-        });
-    }
 
-    const headers: TTableHeader[] = [
+    const headers: TTableHeader<User>[] = [
         {
             name: "id",
-            selector: (row: TTableRecord) => row.id,
-            tableSort: (field: string) => {
-                defaultSetSort(field);
+            field: 'id',
+            selector: (row) => row.id,
+            tableSort: (field) => {
+                defaultTableSort(field);
             },
         },
         {
             name: "Name",
-            selector: (row: TTableRecord) => row.name,
-            tableSort: (field: string) => {
-                defaultSetSort(field);
+            field: 'name',
+            selector: (row) => row.name,
+            tableSort: (field) => {
+                defaultTableSort(field);
             },
         },
         {
             name: "Email",
-            selector: (row: TTableRecord) => row.email,
+            field: 'email',
+            selector: (row) => row.email,
         },
         {
             name: "Test",
@@ -51,7 +59,7 @@ const UsersPage = () => {
         },
         {
             name: "Edit",
-            selector: (row: TTableRecord) => {
+            selector: (row) => {
                 return (
                     <Button onClick={() => navigate(`/users/${row.id}/edit`)} type="button">Edit</Button>
                 )
@@ -59,11 +67,11 @@ const UsersPage = () => {
         },
     ];
 
-    const config: TTableConfig = {
-        rowClick: (row: TTableRecord) => {
+    const config: TTableConfig<User> = {
+        rowClick: (row) => {
             navigate(`/users/${row.id}`);
         },
-        currentSort: sort,
+        currentSort: currentSort,
     }
 
     if (!isSuccess) {
@@ -76,6 +84,14 @@ const UsersPage = () => {
                 config={config}
                 headers={headers}
                 data={data.data}
+            />
+            <Pagination
+                page={currentPage}
+                lastPage={data.meta.last_page}
+                perPage={perPage}
+                nextPage={nextPage}
+                prevPage={prevPage}
+                changePerPage={changePerPage}
             />
         </MainLayout>
     )

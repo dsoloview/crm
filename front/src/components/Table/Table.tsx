@@ -1,23 +1,23 @@
 import styles from './Table.module.scss';
 import TableHeaderCell from "./TableHeaderCell/TableHeaderCell.tsx";
 import TableRow from "./TableRow/TableRow.tsx";
-import {TTableHeader, TTableConfig, TTableRecord} from "../../types/Table/table.types.ts";
+import {TTableHeader, TTableConfig} from "../../types/Table/table.types.ts";
 
 type Props<T> = {
-    headers: TTableHeader[];
+    headers: TTableHeader<T>[];
     data: T[];
-    config: TTableConfig;
+    config: TTableConfig<T>;
 }
 
-const Table = <T extends TTableRecord,>({headers, data, config}: Props<T>) => {
+const Table = <T extends Record<string, any>,>({headers, data, config}: Props<T>) => {
     const renderedHeaders = headers.map((header) => {
         return (
-            <TableHeaderCell
+            <TableHeaderCell<T>
                 key={header.name}
                 config={config}
                 tableSort={header.tableSort}
             >
-                {header.name}
+                {header}
             </TableHeaderCell>
         )
     })

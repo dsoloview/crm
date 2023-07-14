@@ -1,21 +1,28 @@
-type TTableHeaderSelector = {
-    (row: TTableRecord): any;
+type TTableHeaderSelector<T> = {
+    (row: TTableRecord<T>): any;
 }
 
-export type TTableHeader = {
+export type TTableHeader<T> = {
     name: string;
-    selector: TTableHeaderSelector,
-    tableSort?: (field: string) => void;
+    field?: keyof T;
+    selector: TTableHeaderSelector<T>,
+    tableSort?: (field: keyof T) => void;
 }
 
-export type TTableConfig = {
-    rowClick?: (row: TTableRecord) => any;
-    currentSort?: TTableSort;
+export type TTableConfig<T> = {
+    rowClick?: (row: TTableRecord<T>) => void;
+    currentSort?: TTableSort<T>;
 }
 
-export type TTableSort = {
-    field: string;
+export type TTableSort<T> = {
+    field: keyof T
     direction: 'asc' | 'desc';
 }
 
-export type TTableRecord = Record<string, any> | never
+
+export type TTableRecord<T> = Record<keyof T, unknown> | never
+
+export type TTablePagination = {
+    page: number;
+    perPage: number;
+}

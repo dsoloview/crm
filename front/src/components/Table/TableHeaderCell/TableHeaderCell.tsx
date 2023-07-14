@@ -1,17 +1,16 @@
 import styles from './TableHeaderCell.module.scss';
-import {FC} from "react";
 import classNames from "classnames";
-import {TTableConfig} from "../../../types/Table/table.types.ts";
+import {TTableConfig, TTableHeader} from "../../../types/Table/table.types.ts";
 
-type Props = {
-    tableSort?: (field: string) => void;
-    children: string;
-    config?: TTableConfig;
+type Props<T> = {
+    tableSort?: (field: keyof T) => void;
+    children: TTableHeader<T>;
+    config?: TTableConfig<T>;
 };
-const TableHeaderCell: FC<Props> = ({children, tableSort, config}) => {
+const TableHeaderCell = <T,>({children, tableSort, config}: Props<T>) => {
     function handleSort() {
         if (tableSort) {
-            tableSort(children.toLowerCase());
+            tableSort(children.field as keyof T);
         }
     };
 
@@ -22,7 +21,7 @@ const TableHeaderCell: FC<Props> = ({children, tableSort, config}) => {
     let sortIcon = null;
     console.log(config?.currentSort);
     if (tableSort) {
-        if (config?.currentSort?.field === children.toLowerCase()) {
+        if (config?.currentSort?.field === children.field) {
             if (config?.currentSort?.direction === 'asc') {
                 sortIcon = 'Up'
             } else {
@@ -35,7 +34,7 @@ const TableHeaderCell: FC<Props> = ({children, tableSort, config}) => {
         <th onClick={handleSort} className={cellClasses}>
             <div className={styles.tableHeaderCell__content}>
                 <div className={styles.tableHeaderCell__name}>
-                    {children}
+                    {children.name}
                 </div>
                 {sortIcon}
             </div>

@@ -3,11 +3,11 @@ import {TTableHeader, TTableRecord} from "../../../types/Table/table.types.ts";
 import classNames from "classnames";
 
 type Props<T> = {
-    headers: TTableHeader[];
+    headers: TTableHeader<T>[];
     row: T;
-    rowClick?: (row: TTableRecord) => void;
+    rowClick?: (row: TTableRecord<T>) => void;
 }
-const TableRow = <T extends TTableRecord,>({ headers, row, rowClick }: Props<T>) => {
+const TableRow = <T,>({ headers, row, rowClick }: Props<T>) => {
     function handleRowClick() {
         if (rowClick) {
             rowClick(row);

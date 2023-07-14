@@ -21,13 +21,16 @@ const usersApi = createApi({
     }),
     endpoints(builder) {
         return {
-            getUsers: builder.query<IPaginatedServerResponse<User[]>, TTableSort>({
+            getUsers: builder.query<IPaginatedServerResponse<User[]>, {sort: TTableSort<User>, page: number, perPage: number}>({
                 query(arg) {
-                    const {field, direction} = arg;
+                    const {field, direction} = arg.sort;
+                    const page = arg.page;
+                    const perPage = arg.perPage;
                     const params = new URLSearchParams();
                     params.set('sort', field);
                     params.set('direction', direction);
-                    console.log(params.toString());
+                    params.set('page', page.toString());
+                    params.set('per_page', perPage.toString());
                     return {
                         url: `/users?${params.toString()}`,
                         method: 'GET'
