@@ -1,24 +1,45 @@
 import MainLayout from "../../layouts/main/MainLayout.tsx";
 import {useGetUsersQuery} from "../../store/api/usersApi.ts";
 import Table from "../../components/Table/Table.tsx";
-import {TTableHeader, TTableConfig, TTableRecord} from "../../types/Table/table.types.ts";
+import {TTableHeader, TTableConfig, TTableRecord, TTableSort} from "../../types/Table/table.types.ts";
 import {useNavigate} from "react-router-dom";
 import Button from "../../components/Button/Button.tsx";
 import {User} from "../../types/User/model.ts";
+import {useState} from "react";
 
 const UsersPage = () => {
-    const {data, isSuccess} = useGetUsersQuery();
+    const [sort, setSort] = useState<TTableSort>({field: 'id', direction: 'asc'});
+    const {data, isSuccess} = useGetUsersQuery(sort);
     const navigate = useNavigate();
+    function defaultSetSort(field: string) {
+        setSort(prevState => {
+            if (prevState.field === field) {
+                return {
+                    field: field,
+                    direction: prevState.direction === 'asc' ? 'desc' : 'asc',
+                }
+            }
+            return {
+                field: field,
+                direction: 'asc',
+            }
+        });
+    }
 
     const headers: TTableHeader[] = [
         {
             name: "id",
             selector: (row: TTableRecord) => row.id,
-            hasSort: true,
+            tableSort: (field: string) => {
+                defaultSetSort(field);
+            },
         },
         {
             name: "Name",
             selector: (row: TTableRecord) => row.name,
+            tableSort: (field: string) => {
+                defaultSetSort(field);
+            },
         },
         {
             name: "Email",
@@ -41,7 +62,8 @@ const UsersPage = () => {
     const config: TTableConfig = {
         rowClick: (row: TTableRecord) => {
             navigate(`/users/${row.id}`);
-        }
+        },
+        currentSort: sort,
     }
 
     if (!isSuccess) {
@@ -50,7 +72,11 @@ const UsersPage = () => {
 
     return (
         <MainLayout>
-            <Table<User> config={config} headers={headers} data={data.data} />
+            <Table<User>
+                config={config}
+                headers={headers}
+                data={data.data}
+            />
         </MainLayout>
     )
 }

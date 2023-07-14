@@ -8,16 +8,28 @@ type Props<T> = {
     data: T[];
     config: TTableConfig;
 }
+
 const Table = <T extends TTableRecord,>({headers, data, config}: Props<T>) => {
     const renderedHeaders = headers.map((header) => {
         return (
-            <TableHeaderCell hasSort={header.hasSort} key={header.name}>{header.name}</TableHeaderCell>
+            <TableHeaderCell
+                key={header.name}
+                config={config}
+                tableSort={header.tableSort}
+            >
+                {header.name}
+            </TableHeaderCell>
         )
     })
 
     const renderedBody = data.map((item) => {
         return (
-            <TableRow<T> key={item.id} headers={headers} row={item} rowClick={config.rowClick} />
+            <TableRow<T>
+                key={item.id}
+                headers={headers}
+                row={item}
+                rowClick={config.rowClick}
+            />
         )
     });
 

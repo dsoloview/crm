@@ -4,6 +4,7 @@ import {RootStore} from "../store.ts";
 import {IPaginatedServerResponse, IServerResponse} from "../../types/responses.ts";
 import {User} from "../../types/User/model.ts";
 import {ICreateUserRequest, IUpdateUserRequest} from "../../types/User/requests.ts";
+import {TTableSort} from "../../types/Table/table.types.ts";
 
 const usersApi = createApi({
     reducerPath: 'users',
@@ -20,10 +21,15 @@ const usersApi = createApi({
     }),
     endpoints(builder) {
         return {
-            getUsers: builder.query<IPaginatedServerResponse<User[]>, void>({
-                query() {
+            getUsers: builder.query<IPaginatedServerResponse<User[]>, TTableSort>({
+                query(arg) {
+                    const {field, direction} = arg;
+                    const params = new URLSearchParams();
+                    params.set('sort', field);
+                    params.set('direction', direction);
+                    console.log(params.toString());
                     return {
-                        url: '/users',
+                        url: `/users?${params.toString()}`,
                         method: 'GET'
                     }
                 }
