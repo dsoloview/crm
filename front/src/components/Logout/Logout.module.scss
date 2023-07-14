@@ -1,8 +1,8 @@
-.link {
+.button {
   display: flex;
-  justify-content: center;
   align-items: center;
   gap: 10px;
+  justify-content: center;
 
   &:hover svg, &:hover svg path {
     color: #fff;

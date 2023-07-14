@@ -4,6 +4,7 @@ namespace App\Services\User;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserService
 {
@@ -35,9 +36,9 @@ class UserService
         return $this->user;
     }
 
-    public function all(): Collection
+    public function all(): LengthAwarePaginator
     {
-        return $this->user->with('roles')->get();
+        return $this->user->with('roles')->paginate(5);
     }
 
 }

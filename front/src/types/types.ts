@@ -9,10 +9,3 @@ export interface IServerError {
     message: string
 }
 
-export interface IServerResponse<T> {
-    data: T,
-}
-
-export interface ILogoutResponse {
-    message: 'Logged out'
-}

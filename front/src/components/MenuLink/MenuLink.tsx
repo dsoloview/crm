@@ -9,7 +9,9 @@ type Props = {
 } & WithChildrenProps;
 const MenuLink: FC<Props> = ({to, children, title}) => {
     return (
-        <Link className={styles.link} to={to}>{children}{title && ` ${title}`}</Link>
+        <Link className={styles.link} to={to}>
+            {children}{title && ` ${title}`}
+        </Link>
     );
 }
 

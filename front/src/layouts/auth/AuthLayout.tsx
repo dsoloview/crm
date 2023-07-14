@@ -1,7 +1,6 @@
 import {FC} from "react";
 import {WithChildrenProps} from "../../types/types.ts";
 import styles from "./AuthLauout.module.scss";
-
 import dashboard from "../../assets/images/auth/dashboard.png";
 import logo from "../../assets/images/logo.svg";
 import settings from "../../assets/images/icons/settings.svg";
@@ -15,7 +14,6 @@ const AuthLayout: FC<Props> = (
     }) => {
 
     useAuthRedirect();
-
     return (
         <div className={styles.authLayout}>
             <div className={styles.leftPart}>

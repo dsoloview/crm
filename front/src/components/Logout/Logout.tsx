@@ -1,18 +1,22 @@
 import {FC} from "react";
-import Button from "../Button/Button.tsx";
 import {useLogoutMutation} from "../../store/api/authApi.ts";
 import {useNavigate} from "react-router-dom";
+import styles from './Logout.module.scss';
+import {faArrowRightFromBracket} from "@fortawesome/free-solid-svg-icons";
+import MenuIcon from "../MenuIcon/MenuIcon.tsx";
 
 const Logout : FC = () => {
     const [logoutUser] = useLogoutMutation();
     const navigate = useNavigate();
-    function handleLogout() {
-        logoutUser();
+    async function handleLogout() {
+        await logoutUser();
         navigate('/auth/login')
     }
 
     return (
-        <Button onClick={handleLogout} type='button'>Logout</Button>
+        <button className={styles.button} onClick={handleLogout}>
+            <MenuIcon icon={faArrowRightFromBracket} />Logout
+        </button>
     )
 }
 

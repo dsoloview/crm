@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {User} from "../../types/models.ts";
 import {authApi} from "../api/authApi.ts";
+import {User} from "../../types/User/model.ts";
 
 type State = {
     user: User | undefined

@@ -1,6 +1,7 @@
-import {ERole} from "../enums/roleseEnum.ts";
+import {ERole} from "../../enums/roleseEnum.ts";
 
 export interface User {
+    id: number
     name: string
     email: string
     password: string
