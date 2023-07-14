@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IndexUsersRequest;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\User\UserCollection;
@@ -18,7 +19,7 @@ class UserController extends Controller
     {
     }
 
-    public function index(): UserCollection
+    public function index(IndexUsersRequest $request): UserCollection
     {
         $users = $this->userService->all();
 

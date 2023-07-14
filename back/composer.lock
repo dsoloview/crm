@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1234895ef11ae1df9c252f032653cc71",
+    "content-hash": "e3da8194cb34dd3cd5bfe8f2a228ae9f",
     "packages": [
         {
             "name": "brick/math",
@@ -364,6 +364,51 @@
                 }
             ],
             "time": "2022-09-10T18:51:20+00:00"
+        },
+        {
+            "name": "dsoloview/laravel-filters-sort",
+            "version": "1.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dsoloview/laravel-filters-sort.git",
+                "reference": "ffdf9fa20fff65591cea60753bd07d318138f386"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dsoloview/laravel-filters-sort/zipball/ffdf9fa20fff65591cea60753bd07d318138f386",
+                "reference": "ffdf9fa20fff65591cea60753bd07d318138f386",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "dsoloview\\LaravelFiltersSort\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dmitry Soloviev",
+                    "email": "dsoloview44@gmail.com"
+                }
+            ],
+            "description": "Laravel filters and sort",
+            "keywords": [
+                "filters",
+                "laravel",
+                "sort"
+            ],
+            "support": {
+                "issues": "https://github.com/dsoloview/laravel-filters-sort/issues",
+                "source": "https://github.com/dsoloview/laravel-filters-sort/tree/1.3.2"
+            },
+            "time": "2023-07-14T15:25:56+00:00"
         },
         {
             "name": "egulias/email-validator",

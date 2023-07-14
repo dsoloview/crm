@@ -2,13 +2,15 @@
 
 namespace App\Services\User;
 
+use App\Filters\UserFilter;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
+use App\Sort\UserSort;
+use App\Utils\Paginate;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class UserService
+readonly class UserService
 {
-    public function __construct(private readonly User $user)
+    public function __construct(private User $user)
     {
     }
 
@@ -38,7 +40,10 @@ class UserService
 
     public function all(): LengthAwarePaginator
     {
-        return $this->user->with('roles')->paginate(5);
+        return $this->user->query()
+            ->filter(new UserFilter())
+            ->sort(new UserSort())
+            ->paginate(Paginate::getPerPage());
     }
 
 }
