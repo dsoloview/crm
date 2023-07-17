@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {authApi} from "../api/authApi.ts";
-import {User} from "../../types/User/model.ts";
+import {User} from "../../types/Models/User/model.ts";
+import {api} from "../api/api.ts";
 
 type State = {
     user: User | undefined
@@ -22,7 +22,7 @@ const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addMatcher(
-            authApi.endpoints.login.matchFulfilled,
+            api.endpoints.login.matchFulfilled,
             (state, { payload }) => {
                 state.token = payload.token;
                 state.user = payload.user;
@@ -30,7 +30,7 @@ const authSlice = createSlice({
             },
         ),
         builder.addMatcher(
-            authApi.endpoints.register.matchFulfilled,
+            api.endpoints.register.matchFulfilled,
             (state, { payload }) => {
                 state.token = payload.token;
                 state.user = payload.user;
@@ -38,13 +38,13 @@ const authSlice = createSlice({
             },
         ),
         builder.addMatcher(
-            authApi.endpoints?.getUser.matchFulfilled,
+            api.endpoints?.getUser.matchFulfilled,
             (state, {payload}) => {
                 state.user = payload.data
             }
         ),
         builder.addMatcher(
-            authApi.endpoints?.getUser.matchRejected,
+            api.endpoints?.getUser.matchRejected,
             (state) => {
                 state.user = undefined;
                 state.token = undefined;
@@ -52,7 +52,7 @@ const authSlice = createSlice({
             }
         ),
         builder.addMatcher(
-            authApi.endpoints?.logout.matchFulfilled,
+            api.endpoints?.logout.matchFulfilled,
             (state) => {
                 state.user = undefined;
                 state.token = undefined;

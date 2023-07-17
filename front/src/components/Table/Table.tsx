@@ -34,16 +34,16 @@ const Table = <T extends Record<string, any>,>({headers, data, config}: Props<T>
     });
 
     return (
-        <table className={styles.table}>
-            <thead className={styles.header}>
+            <table className={styles.table}>
+                <thead className={styles.header}>
                 <tr>
                     {renderedHeaders}
                 </tr>
-            </thead>
-            <tbody>
-            {renderedBody}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {renderedBody}
+                </tbody>
+            </table>
     )
 }
 

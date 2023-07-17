@@ -21,8 +21,3 @@ export type TTableSort<T> = {
 
 
 export type TTableRecord<T> = Record<keyof T, unknown> | never
-
-export type TTablePagination = {
-    page: number;
-    perPage: number;
-}

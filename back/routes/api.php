@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Role\RoleController;
 use App\Http\Controllers\Api\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,10 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::apiResource('/users', UserController::class);
+    Route::prefix('/roles')->controller(RoleController::class)->group(function () {
+        Route::get('/', 'index')->name('roles.index');
+        Route::get('/{role}', 'show')->name('roles.show');
+    });
 });
 
 Route::prefix('/auth')->group(function () {

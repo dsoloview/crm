@@ -1,4 +1,4 @@
-import {User} from "./User/model.ts";
+import {User} from "./Models/User/model.ts";
 
 export interface LoginRequest {
     email: string

@@ -19,7 +19,6 @@ const TableHeaderCell = <T,>({children, tableSort, config}: Props<T>) => {
     });
 
     let sortIcon = null;
-    console.log(config?.currentSort);
     if (tableSort) {
         if (config?.currentSort?.field === children.field) {
             if (config?.currentSort?.direction === 'asc') {

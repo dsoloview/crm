@@ -1,28 +1,15 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+import {api} from "./api.ts";
 import {AuthResponse, LoginRequest, RegisterRequest} from "../../types/auth.ts";
-import {RootStore} from "../store.ts";
-import {User} from "../../types/User/model.ts";
 import {ILogoutResponse, IServerResponse} from "../../types/responses.ts";
+import {User} from "../../types/Models/User/model.ts";
 
-const authApi = createApi({
-    reducerPath: 'authApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl: 'http://localhost:8000/api/auth',
-        prepareHeaders: async (headers, {getState}) => {
-            const token = (getState() as RootStore).auth.token;
-            if (token) {
-                headers.set('authorization', `Bearer ${token}`);
-            }
-
-            return headers;
-        }
-    }),
+const authApi = api.injectEndpoints({
     endpoints(builder) {
         return {
             login: builder.mutation<AuthResponse, LoginRequest>({
                 query(data: LoginRequest) {
                     return {
-                        url: '/login',
+                        url: '/auth/login',
                         method: 'POST',
                         body: data
                     }
@@ -31,24 +18,24 @@ const authApi = createApi({
             register: builder.mutation<AuthResponse, RegisterRequest>({
                 query(data: RegisterRequest) {
                     return {
-                        url: '/register',
+                        url: '/auth/register',
                         method: 'POST',
                         body: data
                     }
                 }
             }),
             logout: builder.mutation<ILogoutResponse ,void>({
-               query() {
-                   return {
-                       url: '/logout',
-                       method: 'POST'
-                   }
-               }
+                query() {
+                    return {
+                        url: '/auth/logout',
+                        method: 'POST'
+                    }
+                }
             }),
             getUser: builder.query<IServerResponse<User>, void>({
                 query() {
                     return {
-                        url: '/user',
+                        url: '/auth/user',
                         method: 'GET'
                     }
                 }
@@ -58,4 +45,3 @@ const authApi = createApi({
 })
 
 export const { useLoginMutation, useRegisterMutation, useGetUserQuery, useLogoutMutation, useLazyGetUserQuery }  = authApi;
-export {authApi};

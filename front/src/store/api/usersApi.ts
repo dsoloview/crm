@@ -1,38 +1,24 @@
-import {createApi} from "@reduxjs/toolkit/query/react";
-import {fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
-import {RootStore} from "../store.ts";
 import {IPaginatedServerResponse, IServerResponse} from "../../types/responses.ts";
-import {User} from "../../types/User/model.ts";
-import {ICreateUserRequest, IUpdateUserRequest} from "../../types/User/requests.ts";
-import {TTableSort} from "../../types/Table/table.types.ts";
+import {User} from "../../types/Models/User/model.ts";
+import {ICreateUserRequest, IUpdateUserRequest} from "../../types/Models/User/requests.ts";
+import {ITableRequest} from "../../types/requests.ts";
+import {makeQueryParamsForTable} from "../../utils/queryParamsHelpers.ts";
+import {api} from "./api.ts";
 
-const usersApi = createApi({
-    reducerPath: 'users',
-    baseQuery: fetchBaseQuery({
-        baseUrl: 'http://localhost:8000/api',
-        prepareHeaders: async (headers, {getState}) => {
-            const token = (getState() as RootStore).auth.token;
-            if (token) {
-                headers.set('authorization', `Bearer ${token}`);
-            }
-
-            return headers;
-        }
-    }),
+const usersApi = api.injectEndpoints({
     endpoints(builder) {
         return {
-            getUsers: builder.query<IPaginatedServerResponse<User[]>, {sort: TTableSort<User>, page: number, perPage: number}>({
+            getUsers: builder.query<IPaginatedServerResponse<User[]>, ITableRequest<User>>({
                 query(arg) {
-                    const {field, direction} = arg.sort;
-                    const page = arg.page;
-                    const perPage = arg.perPage;
-                    const params = new URLSearchParams();
-                    params.set('sort', field);
-                    params.set('direction', direction);
-                    params.set('page', page.toString());
-                    params.set('per_page', perPage.toString());
+                    const params = makeQueryParamsForTable<User>(arg);
+                    if (params.length > 0) {
+                        return {
+                            url: `/users?${params}`,
+                            method: 'GET'
+                        }
+                    }
                     return {
-                        url: `/users?${params.toString()}`,
+                        url: '/users',
                         method: 'GET'
                     }
                 }
@@ -75,5 +61,5 @@ const usersApi = createApi({
     }
 });
 
-export const { useGetUsersQuery, useGetUserQuery, useCreateUserMutation, useUpdateUserMutation, useDeleteUserMutation }  = usersApi;
+export const { useGetUsersQuery, useLazyGetUserQuery, useLazyGetUsersQuery, useGetUserQuery, useCreateUserMutation, useUpdateUserMutation, useDeleteUserMutation }  = usersApi;
 export {usersApi};

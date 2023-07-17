@@ -16,7 +16,7 @@ const TableRow = <T,>({ headers, row, rowClick }: Props<T>) => {
     const cellClasses = classNames(styles.cell, {
         [styles.clickable]: !!rowClick,
     });
-    const renderedRow = headers .map((header) => {
+    const renderedRow = headers.map((header) => {
         return (
             <td className={cellClasses} onClick={handleRowClick} key={header.name}>{header.selector(row)}</td>
         )

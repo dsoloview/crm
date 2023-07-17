@@ -1,0 +1,23 @@
+@import "../../../styles/variables.scss";
+
+.select {
+    border-radius: 10px;
+    border: 0.6px solid var(--black-l-6, #B1B2B2);
+    background: white;
+    padding: 5px;
+}
+
+.selectContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.label {
+    color: $textColor;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%;
+}

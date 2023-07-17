@@ -1,4 +1,4 @@
-import {ERole} from "../../enums/roleseEnum.ts";
+import {ERole} from "../../../enums/roleseEnum.ts";
 
 export interface IUpdateUserRequest {
     id: number

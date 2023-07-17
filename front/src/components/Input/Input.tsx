@@ -20,7 +20,7 @@ const Input: FC<Props> = (
         placeholder,
         register,
         error,
-        className
+        className,
     }) => {
     const inputStyles = cx('input', className, {
         "input--error": error

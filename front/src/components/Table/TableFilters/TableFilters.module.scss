@@ -1,0 +1,23 @@
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+
+  input {
+    width: 100%;
+    max-width: 200px;
+    padding: 5px;
+  }
+
+  select {
+    width: 100%;
+    max-width: 200px;
+    padding: 4px;
+  }
+
+  .buttonsContainer {
+    display: flex;
+    gap: 10px;
+  }
+}
