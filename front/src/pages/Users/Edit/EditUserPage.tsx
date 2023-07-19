@@ -16,14 +16,14 @@ const EditUserPage = () => {
     const {id} = useParams<TParams>();
     const {data, isSuccess} = useGetUserQuery(Number(id));
     const {register, handleSubmit, setValue} = useForm<Omit<IUpdateUserRequest, 'id'>>();
-    const [updateUser] = useUpdateUserMutation();
+    const [updateUser, {isSuccess: isUpdateSuccess}] = useUpdateUserMutation();
 
     useEffect(() => {
         if (isSuccess) {
             setValue('name', data.data.name);
             setValue('email', data.data.email);
         }
-    })
+    }, [data])
 
     if (!isSuccess) {
         return <div>Loading...</div>
@@ -44,6 +44,7 @@ const EditUserPage = () => {
                 <div>Email: <Input type="text" register={register('email')} /></div>
                 <Button type="submit" >Save</Button>
             </form>
+            {isUpdateSuccess && <div >User updated</div>}
         </MainLayout>
     )
 }

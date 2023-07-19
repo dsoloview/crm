@@ -4,6 +4,7 @@ import UsersPage from "../pages/Users/UsersPage.tsx";
 import ShowUserPage from "../pages/Users/Show/ShowUserPage.tsx";
 import EditUserPage from "../pages/Users/Edit/EditUserPage.tsx";
 import {RouteObject} from "react-router-dom";
+import UserBreadcrumb from "../pages/Users/UserBreadcrumb/UserBreadcrumb.tsx";
 
 const routes:  RouteObject[] = [
     {
@@ -20,14 +21,14 @@ const routes:  RouteObject[] = [
                 path: "/users/:id",
                 element: <PrivateRoute roles={[ERole.Admin, ERole.User]}><ShowUserPage /></PrivateRoute>,
                 handle: {
-                    crumb: () => `User`
+                    crumb: () => <UserBreadcrumb type='show' />
                 }
             },
             {
                 path: "/users/:id/edit",
                 element: <PrivateRoute roles={[ERole.Admin]}><EditUserPage /></PrivateRoute>,
                 handle: {
-                    crumb: () => `Edit user`
+                    crumb: () => <UserBreadcrumb type={'edit'} />
                 }
             }
         ]
