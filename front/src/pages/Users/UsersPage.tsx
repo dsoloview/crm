@@ -15,6 +15,7 @@ import Select from "../../components/Form/Select/Select.tsx";
 import TableFilters from "../../components/Table/TableFilters/TableFilters.tsx";
 import {useGetRolesQuery} from "../../store/api/rolesApi.ts";
 import {ReactNode} from "react";
+import {Role} from "../../types/Models/Role/model.ts";
 
 type TFilter = {
     name: string,
@@ -75,11 +76,11 @@ const UsersPage = () => {
         {
             name: "Roles",
             selector: (row) => {
-                const roles = row.roles as Array<string>
+                const roles = row.roles as Role[]
                 return (
                     <div>
-                        {roles.map((role: string) => {
-                            return <div key={role}>{role}</div>
+                        {roles.map((role) => {
+                            return <div key={role.id}>{role.name}</div>
                         })}
                     </div>
                 )

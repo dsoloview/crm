@@ -18,7 +18,7 @@ const PrivateRoute: FC<Props> = ({children, roles}) => {
         return null
     }
 
-    if (user?.roles.some(role => roles.includes(role))) {
+    if (user?.roles.some(role => roles.includes(role.name as ERole))) {
         return (
             <>
                 {children}

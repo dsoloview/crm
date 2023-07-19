@@ -6,7 +6,7 @@ export interface IUpdateUserRequest {
     email: string
     password?: string
     password_confirmation?: string
-    roles: ERole[]
+    roles: number[]
 }
 
 export interface ICreateUserRequest {

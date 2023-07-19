@@ -12,7 +12,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => ['required'],
             'email' => ['required', 'email', 'max:254', Rule::unique('users')->ignore($this->user)],
-            'password' => ['required', 'confirmed', 'exclude_if:password,null'],
+            'password' => ['exclude_if:password,null'],
             'roles' => ['required', 'array', 'exists:roles,id'],
         ];
     }

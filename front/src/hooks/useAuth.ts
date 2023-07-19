@@ -1,4 +1,4 @@
-import {useLazyGetUserQuery} from "../store/api/authApi.ts";
+import {useLazyGetAuthUserQuery} from "../store/api/authApi.ts";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 
@@ -6,7 +6,7 @@ import {useEffect} from "react";
 function useAuth(): void {
     const navigate = useNavigate();
 
-    const [trigger] = useLazyGetUserQuery();
+    const [trigger] = useLazyGetAuthUserQuery();
 
     useEffect(() => {
         trigger()

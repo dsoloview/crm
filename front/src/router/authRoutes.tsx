@@ -1,8 +1,8 @@
 import Login from "../pages/Auth/Login/Login.tsx";
 import Registration from "../pages/Auth/Registration/Registration.tsx";
-import {Navigate} from "react-router-dom";
+import {Navigate, RouteObject} from "react-router-dom";
 
-const routes = [
+const routes: RouteObject[] = [
     {
         path: "/auth",
         children: [

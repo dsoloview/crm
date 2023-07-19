@@ -43,6 +43,7 @@ readonly class UserService
         return $this->user->query()
             ->filter(new UserFilter())
             ->sort(new UserSort())
+            ->with('roles')
             ->paginate(Paginate::getPerPage());
     }
 

@@ -44,7 +44,9 @@ class Handler extends ExceptionHandler
                     $code = $e->getCode() !== 0 ? $e->getCode() : 500;
                     return response()->json([
                         'message' => $e->getMessage(),
-                        'status' => $code
+                        'status' => $code,
+                        'line' => $e->getLine(),
+                        'file' => $e->getFile(),
                     ], $code);
                 }
         });

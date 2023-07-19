@@ -9,14 +9,22 @@ import usersRoutes from "./usersRoutes.tsx";
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <PrivateRoute roles={[ERole.User, ERole.Admin]}><HomePage /></PrivateRoute>,
+        children: [
+            {
+              index: true,
+              element: <PrivateRoute roles={[ERole.User, ERole.Admin]}><HomePage /></PrivateRoute>,
+            },
+            ...usersRoutes,
+            ...authRoutes,
+            {
+                path: "/components",
+                element: <PrivateRoute roles={[ERole.User]}><ComponentsPage /></PrivateRoute>,
+            },
+        ],
+        handle: {
+            crumb: () => 'Home',
+        }
     },
-    {
-        path: "/components",
-        element: <PrivateRoute roles={[ERole.User]}><ComponentsPage /></PrivateRoute>,
-    },
-    ...authRoutes,
-    ...usersRoutes,
 ])
 
 export default router;

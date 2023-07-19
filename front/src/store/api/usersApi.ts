@@ -38,6 +38,14 @@ const usersApi = api.injectEndpoints({
                         method: 'PATCH',
                         body: data
                     }
+                },
+
+                async onQueryStarted({id}, {dispatch, queryFulfilled}) {
+                    const {data} = await queryFulfilled;
+                    dispatch(usersApi.util.updateQueryData('getUser', id, (draft) => {
+                            Object.assign(draft, data)
+                    })
+                    )
                 }
             }),
             deleteUser: builder.mutation<void, number>({

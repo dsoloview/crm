@@ -32,7 +32,7 @@ const authApi = api.injectEndpoints({
                     }
                 }
             }),
-            getUser: builder.query<IServerResponse<User>, void>({
+            getAuthUser: builder.query<IServerResponse<User>, void>({
                 query() {
                     return {
                         url: '/auth/user',
@@ -44,4 +44,5 @@ const authApi = api.injectEndpoints({
     }
 })
 
-export const { useLoginMutation, useRegisterMutation, useGetUserQuery, useLogoutMutation, useLazyGetUserQuery }  = authApi;
+export const { useLoginMutation, useRegisterMutation, useGetAuthUserQuery, useLogoutMutation, useLazyGetAuthUserQuery }  = authApi;
+export { authApi }
