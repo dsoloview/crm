@@ -1,14 +1,13 @@
 import {useGetUserQuery} from "../../../store/api/usersApi.ts";
 import {useParams} from "react-router-dom";
+import {TParamsId} from "../../../types/params.ts";
 
 type Props = {
     type: 'show' | 'edit';
 }
-type TParams = {
-    id: string;
-}
+
 const UserBreadcrumb = ({type}: Props) => {
-    const {id} = useParams<TParams>();
+    const {id} = useParams<TParamsId>();
     const {data, isSuccess} = useGetUserQuery(Number(id));
 
     if (!isSuccess) {

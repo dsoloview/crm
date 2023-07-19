@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 
 
-function useAuth(): void {
+function useAuth() {
     const navigate = useNavigate();
 
     const [trigger] = useLazyGetAuthUserQuery();

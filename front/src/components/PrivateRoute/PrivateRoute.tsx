@@ -14,11 +14,11 @@ const PrivateRoute: FC<Props> = ({children, roles}) => {
 
     const {user} = useSelector((state: RootStore) => state.auth);
 
-    if (!user) {
+    if (!user || !user.roles) {
         return null
     }
 
-    if (user?.roles.some(role => roles.includes(role.name as ERole))) {
+    if (user?.roles?.some(role => roles.includes(role.name as ERole))) {
         return (
             <>
                 {children}

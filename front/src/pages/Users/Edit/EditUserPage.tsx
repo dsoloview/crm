@@ -7,13 +7,10 @@ import Input from "../../../components/Input/Input.tsx";
 import {useEffect} from "react";
 import Button from "../../../components/Button/Button.tsx";
 import {IUpdateUserRequest} from "../../../types/Models/User/requests.ts";
-
-type TParams = {
-    id: string;
-}
+import {TParamsId} from "../../../types/params.ts";
 
 const EditUserPage = () => {
-    const {id} = useParams<TParams>();
+    const {id} = useParams<TParamsId>();
     const {data, isSuccess} = useGetUserQuery(Number(id));
     const {register, handleSubmit, setValue} = useForm<Omit<IUpdateUserRequest, 'id'>>();
     const [updateUser, {isSuccess: isUpdateSuccess}] = useUpdateUserMutation();

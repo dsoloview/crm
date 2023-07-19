@@ -1,12 +1,10 @@
 import {useParams} from "react-router-dom";
 import {useGetUserQuery} from "../../../store/api/usersApi.ts";
 import MainLayout from "../../../layouts/main/MainLayout.tsx";
+import {TParamsId} from "../../../types/params.ts";
 
-type TParams = {
-    id: string;
-}
 const ShowUserPage = () => {
-    const {id} = useParams<TParams>();
+    const {id} = useParams<TParamsId>();
     const {data, isSuccess} = useGetUserQuery(Number(id));
     if (!isSuccess) {
         return <div>Loading...</div>

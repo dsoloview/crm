@@ -109,7 +109,11 @@ const UsersPage = () => {
     });
 
     if (!isSuccess) {
-        return <div>Loading...</div>
+        return (
+            <MainLayout>
+                <div>Loading...</div>
+            </MainLayout>
+        )
     }
 
     return (
