@@ -16,7 +16,9 @@ type Props = {
     serverError?: string[];
 }& WithChildrenProps;
 const Select = ({ name, label, children, register, defaultValue, className, error, serverError }: Props) => {
-    const classes = classNames(styles.select, className);
+    const classes = classNames(styles.select, className, {
+        [styles['select--error']]: error || serverError?.length,
+    });
 
     const renderedServerErrors = serverError?.map((error) => {
         return (

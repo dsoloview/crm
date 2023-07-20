@@ -24,8 +24,9 @@ const Input: FC<Props> = (
         className,
         serverError
     }) => {
+
     const inputStyles = cx('input', className, {
-        "input--error": error
+        "input--error": error || serverError?.length,
     })
 
     const renderedServerErrors = serverError?.map((error) => {
