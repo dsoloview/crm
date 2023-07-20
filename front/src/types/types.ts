@@ -5,7 +5,19 @@ export type WithChildrenProps = {
 };
 
 export interface IServerError {
+    data: {
+        message: string
+    }
     status: number,
-    message: string
 }
 
+export interface IServerValidationError {
+    data: {
+        message: string,
+        errors: {
+            [key: string]: string[]
+        }
+    }
+    status: number,
+
+}

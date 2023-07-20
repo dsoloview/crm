@@ -12,7 +12,7 @@ class CreateUserRequest extends FormRequest
             'name' => ['required'],
             'email' => ['required', 'email', 'max:254', 'unique:users'],
             'password' => ['required', 'confirmed'],
-            'roles' => ['required', 'array', 'exists:roles,id'],
+            'role' => ['required', 'exists:roles,id'],
         ];
     }
 

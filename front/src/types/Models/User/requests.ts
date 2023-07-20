@@ -1,12 +1,10 @@
-import {ERole} from "../../../enums/roleseEnum.ts";
-
 export interface IUpdateUserRequest {
     id: number
     name: string
     email: string
     password?: string
     password_confirmation?: string
-    roles: number[]
+    role: number
 }
 
 export interface ICreateUserRequest {
@@ -14,5 +12,5 @@ export interface ICreateUserRequest {
     email: string
     password: string
     password_confirmation: string
-    roles: ERole[]
+    role: number
 }

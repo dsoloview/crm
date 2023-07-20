@@ -5,6 +5,7 @@ import ShowUserPage from "../pages/Users/Show/ShowUserPage.tsx";
 import EditUserPage from "../pages/Users/Edit/EditUserPage.tsx";
 import {RouteObject} from "react-router-dom";
 import UserBreadcrumb from "../pages/Users/UserBreadcrumb/UserBreadcrumb.tsx";
+import CreateUserPage from "../pages/Users/Create/CreateUserPage.tsx";
 
 const routes:  RouteObject[] = [
     {
@@ -16,6 +17,13 @@ const routes:  RouteObject[] = [
             {
                 index: true,
                 element: <PrivateRoute roles={[ERole.Admin]}><UsersPage /></PrivateRoute>,
+            },
+            {
+                path: "/users/create",
+                element: <PrivateRoute roles={[ERole.Admin, ERole.User]}><CreateUserPage /></PrivateRoute>,
+                handle: {
+                    crumb: () => 'Create user'
+                }
             },
             {
                 path: "/users/:id",

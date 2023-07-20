@@ -11,11 +11,15 @@ const UserBreadcrumb = ({type}: Props) => {
     const {data, isSuccess} = useGetUserQuery(Number(id));
 
     if (!isSuccess) {
-        return ''
+        if (type === 'show') {
+            return 'User';
+        } else {
+            return 'Edit user';
+        }
     }
 
     if (type === 'show') {
-        return data.data.name;
+        return data.data.name ?? 'User';
     } else {
         return `Edit user ${data.data.name}`;
     }

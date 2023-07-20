@@ -17,14 +17,14 @@ readonly class UserService
     public function create(array $data): User
     {
         $user = $this->user->create($data);
-        $user->syncRoles($data['roles']);
+        $user->syncRoles($data['role']);
         return $user;
     }
 
     public function update(array $data, User $user): User
     {
         $user->update($data);
-        $user->syncRoles($data['roles']);
+        $user->syncRoles($data['role']);
         return $user;
     }
 

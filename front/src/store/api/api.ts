@@ -3,6 +3,7 @@ import {RootStore} from "../store.ts";
 
 const api = createApi({
     reducerPath: 'api',
+    tagTypes: ['User'],
     baseQuery: fetchBaseQuery({
         baseUrl: 'http://localhost:8000/api',
         prepareHeaders: async (headers, {getState}) => {

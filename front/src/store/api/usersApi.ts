@@ -9,6 +9,13 @@ const usersApi = api.injectEndpoints({
     endpoints(builder) {
         return {
             getUsers: builder.query<IPaginatedServerResponse<User[]>, ITableRequest<User>>({
+                providesTags: (result) =>
+                    result
+                        ? [
+                            ...result.data.map(({ id }) => ({ type: 'User' as const, id })),
+                            { type: 'User', id: 'LIST' },
+                        ]
+                        : [{ type: 'User', id: 'LIST' }],
                 query(arg) {
                     const params = makeQueryParamsForTable<User>(arg);
                     if (params.length > 0) {
@@ -24,6 +31,9 @@ const usersApi = api.injectEndpoints({
                 }
             }),
             getUser: builder.query<IServerResponse<User>, number>({
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                providesTags: (result, error, id) => [{type: 'User', id: id}],
                 query(id) {
                     return {
                         url: `/users/${id}`,
@@ -32,6 +42,7 @@ const usersApi = api.injectEndpoints({
                 }
             }),
             updateUser: builder.mutation<IServerResponse<User>, IUpdateUserRequest>({
+                invalidatesTags: [{type: 'User', id: 'LIST'}],
                 query(data) {
                     return {
                         url: `/users/${data.id}`,
@@ -49,6 +60,7 @@ const usersApi = api.injectEndpoints({
                 }
             }),
             deleteUser: builder.mutation<void, number>({
+                invalidatesTags: [{type: 'User', id: 'LIST'}],
                 query(id) {
                     return {
                         url: `/users/${id}`,
@@ -57,6 +69,7 @@ const usersApi = api.injectEndpoints({
                 }
             }),
             createUser: builder.mutation<IServerResponse<User>, ICreateUserRequest>({
+                invalidatesTags: [{type: 'User', id: 'LIST'}],
                 query(data) {
                     return {
                         url: `/users`,

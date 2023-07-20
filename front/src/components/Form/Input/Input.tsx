@@ -12,6 +12,7 @@ type Props = {
     error?: FieldError
     register: UseFormRegisterReturn
     className?: string
+    serverError?: string[]
 }
 const Input: FC<Props> = (
     {
@@ -21,10 +22,18 @@ const Input: FC<Props> = (
         register,
         error,
         className,
+        serverError
     }) => {
     const inputStyles = cx('input', className, {
         "input--error": error
     })
+
+    const renderedServerErrors = serverError?.map((error) => {
+        return (
+            <p key={error} className={styles.serverErrorMessage}>{error}</p>
+        )
+    });
+
     return (
         <div className={styles.inputContainer}>
             {label && <label className={styles.label}>{label}</label>}
@@ -35,6 +44,7 @@ const Input: FC<Props> = (
             placeholder={placeholder}
         />
             {error && <p className={styles.errorMessage}>{error.message}</p>}
+            {renderedServerErrors}
         </div>
     )
 }

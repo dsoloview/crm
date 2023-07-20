@@ -2,7 +2,7 @@ import Button from "../Button/Button.tsx";
 import {FC} from "react";
 import classNames from "classnames";
 import styles from './Pagination.module.scss';
-import Select from "../Form/Select/Select.tsx";
+import Select from "../Form/Selects/Select/Select.tsx";
 
 type Props = {
     page: number;

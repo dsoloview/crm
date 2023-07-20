@@ -11,9 +11,9 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'email' => ['required', 'email', 'max:254', Rule::unique('users')->ignore($this->user)],
-            'password' => ['exclude_if:password,null'],
-            'roles' => ['required', 'array', 'exists:roles,id'],
+            'email' => ['email', 'max:254', Rule::unique('users')->ignore($this->user)],
+            'password' => ['exclude_if:password,null', 'confirmed'],
+            'role' => ['required', 'exists:roles,id'],
         ];
     }
 

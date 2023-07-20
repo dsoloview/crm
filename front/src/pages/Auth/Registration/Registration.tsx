@@ -1,7 +1,7 @@
 import styles from './Registration.module.scss';
 import {FC} from "react";
 import AuthLayout from "../../../layouts/auth/AuthLayout.tsx";
-import Input from "../../../components/Input/Input.tsx";
+import Input from "../../../components/Form/Input/Input.tsx";
 import Button from "../../../components/Button/Button.tsx";
 import {Link, useNavigate} from "react-router-dom";
 import {SubmitHandler, useForm} from "react-hook-form";

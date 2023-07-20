@@ -1,5 +1,5 @@
 import styles from './Search.module.scss';
-import Input from "../Input/Input.tsx";
+import Input from "../Form/Input/Input.tsx";
 import {SubmitHandler, useForm} from "react-hook-form";
 import Button from "../Button/Button.tsx";
 

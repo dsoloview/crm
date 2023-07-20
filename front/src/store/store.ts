@@ -3,6 +3,7 @@ import {setupListeners} from "@reduxjs/toolkit/query";
 import {authReducer} from "./slices/authSlice.ts";
 import {useDispatch} from "react-redux";
 import {api} from "./api/api.ts";
+import {rtkQueryErrorCatcher} from "./middlewares/errorCatching.ts";
 
 const store = configureStore({
    reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
    middleware: (getDefaultMiddleware) => {
       return getDefaultMiddleware()
           .concat(api.middleware)
+          .concat(rtkQueryErrorCatcher)
    }
 });
 

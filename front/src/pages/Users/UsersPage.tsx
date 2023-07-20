@@ -1,5 +1,5 @@
 import MainLayout from "../../layouts/main/MainLayout.tsx";
-import {useGetUsersQuery} from "../../store/api/usersApi.ts";
+import {useDeleteUserMutation, useGetUsersQuery} from "../../store/api/usersApi.ts";
 import Table from "../../components/Table/Table.tsx";
 import {useNavigate} from "react-router-dom";
 import Button from "../../components/Button/Button.tsx";
@@ -9,13 +9,16 @@ import Pagination from "../../components/Pagination/Pagination.tsx";
 import styles from './UsersPage.module.scss';
 import useSort from "../../hooks/table/useSort.ts";
 import {usePagination} from "../../hooks/table/usePagination.ts";
-import Input from "../../components/Input/Input.tsx";
+import Input from "../../components/Form/Input/Input.tsx";
 import useFilters from "../../hooks/table/useFilters.ts";
-import Select from "../../components/Form/Select/Select.tsx";
 import TableFilters from "../../components/Table/TableFilters/TableFilters.tsx";
-import {useGetRolesQuery} from "../../store/api/rolesApi.ts";
-import {ReactNode} from "react";
 import {Role} from "../../types/Models/Role/model.ts";
+import RolesSelect from "../../components/Form/Selects/RolesSelect/RolesSelect.tsx";
+import Loader from "../../components/Loader/Loader.tsx";
+import parseDate from "../../utils/dateHelper.ts";
+import {useSelector} from "react-redux";
+import {RootStore} from "../../store/store.ts";
+import {toast} from "react-toastify";
 
 type TFilter = {
     name: string,
@@ -23,12 +26,14 @@ type TFilter = {
     role: number,
     search: string
 }
+
 const UsersPage = () => {
     const navigate = useNavigate();
     const {createHeaders, createConfig} = useTable<User>()
-    const {currentSort, defaultTableSort} = useSort<User>({field: 'id', direction: 'asc'});
+    const {currentSort, defaultTableSort} = useSort<User>({field: 'id', direction: 'desc'});
     const {currentPage, perPage, changePage, nextPage, prevPage, changePerPage} = usePagination(1, 10);
     const {register, onFiltersSubmit, filters, onFiltersReset} = useFilters<TFilter>(changePage);
+    const currentUser = useSelector((state: RootStore) => state.auth.user);
 
     const {data, isSuccess} = useGetUsersQuery({
         sort: currentSort,
@@ -36,15 +41,14 @@ const UsersPage = () => {
         filters: filters,
         perPage: perPage
     });
+    const [deleteUser] = useDeleteUserMutation();
 
-    const {data: roles, isSuccess: isRolesSuccess} = useGetRolesQuery();
-    let renderedRolesOptions: ReactNode = [];
-    if (isRolesSuccess) {
-        renderedRolesOptions = roles.data.map((role) => {
-            return (
-                <option key={role.id} value={role.id}>{role.name}</option>
-            )
-        });
+    const handleDelete = async (id: number) => {
+        if (currentUser?.id === id) {
+            toast.error('You can\'t delete yourself');
+            return;
+        }
+        await deleteUser(id);
     }
 
 
@@ -87,21 +91,21 @@ const UsersPage = () => {
             }
         },
         {
-            name: "Show",
-            selector: (row) => {
-                return (
-                    <Button onClick={() => navigate(`/users/${row.id}`)} type="button">Show</Button>
-                )
-            },
+            name: "Created at",
+            selector: (row) => parseDate(row.created_at as string),
         },
         {
-            name: "Edit",
+            name: 'Actions',
             selector: (row) => {
                 return (
-                    <Button onClick={() => navigate(`/users/${row.id}/edit`)} type="button">Edit</Button>
+                    <div className="tableActions">
+                        <Button onClick={() => navigate(`/users/${row.id}`)} type="button">Show</Button>
+                        <Button onClick={() => navigate(`/users/${row.id}/edit`)} type="button">Edit</Button>
+                        <Button onClick={() => handleDelete(Number(row.id))} type="button">Delete</Button>
+                    </div>
                 )
-            },
-        },
+            }
+        }
     ]);
 
     const config =  createConfig({
@@ -111,7 +115,7 @@ const UsersPage = () => {
     if (!isSuccess) {
         return (
             <MainLayout>
-                <div>Loading...</div>
+                <Loader mainLayout />
             </MainLayout>
         )
     }
@@ -119,15 +123,21 @@ const UsersPage = () => {
     return (
         <MainLayout>
             <div className={styles.container}>
-                <h1 className={styles.title}>Users</h1>
-                <TableFilters onFiltersReset={onFiltersReset} onFiltersSubmit={onFiltersSubmit}>
-                    <Input placeholder="Name" type="text" register={register('name')} />
-                    <Input placeholder="Email" type="text" register={register('email')} />
-                    <Select register={register('role')}>
-                        <option value="">Role</option>
-                        {renderedRolesOptions}
-                    </Select>
-                </TableFilters>
+                <div className={styles.header}>
+                    <div className={styles.headerLeft}>
+                        <h1>Users</h1>
+                        <TableFilters onFiltersReset={onFiltersReset} onFiltersSubmit={onFiltersSubmit}>
+                            <Input placeholder="Name" type="text" register={register('name')} />
+                            <Input placeholder="Email" type="text" register={register('email')} />
+                            <RolesSelect<TFilter> name='role' register={register} />
+                        </TableFilters>
+                    </div>
+                    <div className={styles.headerRight}>
+                        <Button onClick={() => navigate('/users/create')} type="button">Create user</Button>
+                    </div>
+
+                </div>
+
                 <Table<User>
                     config={config}
                     headers={headers}

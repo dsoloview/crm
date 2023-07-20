@@ -1,26 +1,24 @@
-import styles from './EditUserPage.module.scss';
-import {useParams} from "react-router-dom";
-import {useGetUserQuery, useUpdateUserMutation} from "../../../store/api/usersApi.ts";
 import MainLayout from "../../../layouts/main/MainLayout.tsx";
-import {useForm} from "react-hook-form";
-import Input from "../../../components/Form/Input/Input.tsx";
-import {useEffect} from "react";
-import Button from "../../../components/Button/Button.tsx";
-import {TParamsId} from "../../../types/params.ts";
-import RolesSelect from "../../../components/Form/Selects/RolesSelect/RolesSelect.tsx";
 import {z} from "zod";
+import {useNavigate} from "react-router-dom";
+import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import Form from "../../../components/Form/Form.tsx";
+import {useCreateUserMutation} from "../../../store/api/usersApi.ts";
+import {useEffect} from "react";
 import {toast} from "react-toastify";
-import Loader from "../../../components/Loader/Loader.tsx";
+import styles from "./CreateUserPage.module.scss";
+import Input from "../../../components/Form/Input/Input.tsx";
 import {isServerValidationError} from "../../../utils/errorHelpers.ts";
+import RolesSelect from "../../../components/Form/Selects/RolesSelect/RolesSelect.tsx";
+import Button from "../../../components/Button/Button.tsx";
+import Form from "../../../components/Form/Form.tsx";
 
-type TEditUserForm = {
+type TCreateUserForm = {
     name: string,
     email: string,
     role: number
-    password?: string
-    password_confirmation?: string
+    password: string
+    password_confirmation: string
 }
 
 const formValidationSchema = z.object({
@@ -29,67 +27,49 @@ const formValidationSchema = z.object({
     email: z.string().email().min(1, "Email is required"),
     password: z.string()
         .min(1, "Password is required")
-        .min(6, 'Password should have more than 6 characters')
-        .optional()
-        .or(z.literal('')),
+        .min(6, 'Password should have more than 6 characters'),
     password_confirmation: z.string()
         .min(1, "Password confirmation is required")
         .min(6, 'Password should have more than 6 characters')
-        .optional()
-        .or(z.literal('')),
 }).refine((data) => data.password === data.password_confirmation, {
     message: "Passwords don't match",
     path: ["password_confirmation"],
 });
 
-const EditUserPage = () => {
-    const {id} = useParams<TParamsId>();
-    const {data, isSuccess} = useGetUserQuery(Number(id));
+const CreateUserPage = () => {
     const {register,
         handleSubmit,
         setValue,
-        formState: {errors, isDirty},
-        reset} = useForm<TEditUserForm>(
+        formState: {errors, isDirty}
+    } = useForm<TCreateUserForm>(
         {
             mode: 'onChange',
             resolver: zodResolver(formValidationSchema)
         }
     );
-    const [updateUser, {isSuccess: isUpdateSuccess, error: serverError }] = useUpdateUserMutation();
+    const [createUser, {isSuccess, error: serverError }] = useCreateUserMutation();
+    const navigate = useNavigate();
+
+    const onSubmit = async (data: TCreateUserForm) => {
+        await createUser(data);
+    }
 
     useEffect(() => {
         if (isSuccess) {
-            setValue('name', data.data.name);
-            setValue('email', data.data.email);
-            setValue('role', data.data.roles[0].id);
+            toast.success('User created');
+            navigate('/users');
         }
-    }, [data, isSuccess, setValue])
 
-    useEffect(() => {
-        if (isUpdateSuccess) {
-            reset({password: '', password_confirmation: ''});
-            toast.success('User updated successfully');
+        if (serverError) {
+            setValue('password', '');
+            setValue('password_confirmation', '');
         }
-    }, [isUpdateSuccess, reset])
+    }, [isSuccess, serverError])
 
-    if (!isSuccess) {
-        return (
-            <MainLayout>
-                <Loader />
-            </MainLayout>
-        )
-    }
-
-
-
-    const onSubmit = async (data: TEditUserForm) => {
-        await updateUser({id: Number(id),...data});
-    }
-console.log(serverError);
     return (
         <MainLayout>
-            <h1>Edit User {data.data.id}</h1>
-            <Form className={styles.editUserForm} onSubmit={handleSubmit(onSubmit)}>
+            <h1>Create user</h1>
+            <Form className={styles.createUserForm} onSubmit={handleSubmit(onSubmit)}>
                 <div className={styles.inputContainer}>
                     Name: <Input
                     type="text"
@@ -132,8 +112,9 @@ console.log(serverError);
                 </div>
                 <Button disabled={!isDirty} type="submit" >Save</Button>
             </Form>
+
         </MainLayout>
     )
 }
 
-export default EditUserPage;
+export default CreateUserPage;
