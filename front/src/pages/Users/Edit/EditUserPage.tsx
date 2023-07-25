@@ -61,7 +61,7 @@ const EditUserPage = () => {
         if (isSuccess) {
             setValue('name', data.data.name);
             setValue('email', data.data.email);
-            setValue('role', data.data.roles[0].id);
+            setValue('role', data.data.roles[0]?.id);
         }
     }, [data, isSuccess, setValue])
 
