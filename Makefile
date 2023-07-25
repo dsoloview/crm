@@ -9,3 +9,6 @@ migrate:
 
 api:
 	docker compose exec api bash
+
+front:
+	docker compose exec front bash
